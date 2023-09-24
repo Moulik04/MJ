@@ -1,0 +1,54 @@
+#This is a very basic text-based adventure game.
+import random
+
+def main():
+    player_name = input("Enter your name: ")
+    print(f"Welcome, {player_name}, to the Text-Based Adventure Game!")
+    
+    while True:
+        print("\nChoose an option:")
+        print("1. Start Game")
+        print("2. Quit")
+        
+        choice = input("Enter your choice: ")
+        
+        if choice == '1':
+            play_game()
+        elif choice == '2':
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please enter '1' to start the game or '2' to quit.")
+
+def play_game():
+    print("\nYou find yourself in a dark forest. You can go left or right.")
+    direction = input("Which way do you choose? (left/right): ").lower()
+    
+    if direction == 'left':
+        print("You encounter a friendly squirrel.")
+        action = input("Do you want to 'talk' to the squirrel or 'ignore' it? ").lower()
+        
+        if action == 'talk':
+            print("The squirrel tells you a secret path deeper into the forest.")
+            print("You follow the path and discover hidden treasure!")
+        elif action == 'ignore':
+            print("You ignore the squirrel and continue walking.")
+            print("Unfortunately, you get lost in the forest and can't find your way out.")
+            print("Game Over!")
+        else:
+            print("Invalid action. Please choose 'talk' or 'ignore'.")
+    elif direction == 'right':
+        print("You encounter a fierce dragon!")
+        action = input("Do you want to 'fight' the dragon or 'run' away? ").lower()
+        
+        if action == 'fight':
+            print("You bravely fight the dragon and defeat it!")
+            print("You are hailed as a hero!")
+        elif action == 'run':
+            print("You run away from the dragon in fear.")
+            print("Unfortunately, you trip and fall into a pit. Game Over!")
+        else:
+            print("Invalid action. Please choose 'fight' or 'run'.")
+
+if __name__ == "__main__":
+    main()

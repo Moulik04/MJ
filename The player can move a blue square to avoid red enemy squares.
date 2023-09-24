@@ -1,0 +1,77 @@
+#This code creates a simple game where the player can move a blue square to avoid red enemy squares.
+import pygame
+import sys
+import random
+
+pygame.init()
+
+WIDTH, HEIGHT = 800, 600
+WHITE = (255, 255, 255)
+PLAYER_SIZE = 50
+PLAYER_SPEED = 5
+ENEMY_SIZE = 30
+ENEMY_SPEED = 3
+
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("My Game")
+
+player_image = pygame.Surface((PLAYER_SIZE, PLAYER_SIZE))
+player_image.fill((0, 128, 255))
+player_rect = player_image.get_rect()
+player_rect.center = (WIDTH // 2, HEIGHT - PLAYER_SIZE // 2)
+
+enemies = []
+for _ in range(5):
+    enemy = pygame.Surface((ENEMY_SIZE, ENEMY_SIZE))
+    enemy.fill((255, 0, 0))
+    enemy_rect = enemy.get_rect()
+    enemy_rect.x = random.randint(0, WIDTH - ENEMY_SIZE)
+    enemy_rect.y = random.randint(0, HEIGHT - ENEMY_SIZE)
+    enemies.append((enemy, enemy_rect))
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT]:
+        player_rect.x -= PLAYER_SPEED
+    if keys[pygame.K_RIGHT]:
+        player_rect.x += PLAYER_SPEED
+    if keys[pygame.K_UP]:
+        player_rect.y -= PLAYER_SPEED
+    if keys[pygame.K_DOWN]:
+        player_rect.y += PLAYER_SPEED
+
+    for enemy, enemy_rect in enemies:
+        enemy_rect.y += ENEMY_SPEED
+        if enemy_rect.y > HEIGHT:
+            enemy_rect.y = -ENEMY_SIZE
+            enemy_rect.x = random.randint(0, WIDTH - ENEMY_SIZE)
+
+    for _, enemy_rect in enemies:
+        if player_rect.colliderect(enemy_rect):
+            running = False
+
+    screen.fill(WHITE)
+
+    screen.blit(player_image, player_rect)
+
+    for enemy, enemy_rect in enemies:
+        screen.blit(enemy, enemy_rect)
+
+    pygame.display.flip()
+
+font = pygame.font.Font(None, 36)
+text = font.render("Game Over", True, (255, 0, 0))
+text_rect = text.get_rect()
+text_rect.center = (WIDTH // 2, HEIGHT // 2)
+screen.blit(text, text_rect)
+pygame.display.flip()
+
+pygame.time.delay(2000)
+
+pygame.quit()
+sys.exit()
